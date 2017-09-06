@@ -1,0 +1,14 @@
+/*取消alert的 button按钮*/
+
+.weui-dialog .weui-dialog__hd{
+  display: none;
+}
+.weui-dialog .weui-dialog__bd{
+  font-size: 14px;
+  padding: 0.8em 1.6em 0.8em;
+  line-height: 40px;
+  color: #666;
+}
+.weui-dialog .weui-dialog__ft .weui-dialog__btn_primary{
+  color: #4a8bff;
+}
