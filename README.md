@@ -63,6 +63,6 @@ npm run build --report
 > 2017/09/13：  
 
    1.UI界面与交互基本完成  
-   2.使用express与body-parse，读取db.json的假数据
-     `npm install body-parse --save` 修改`build/dev-server.js`与`config/index.js`,详情见这2个文件.
+   2.使用express读取db.json的假数据
+     `npm install body-parse --save` 后修改`build/dev-server.js`与`config/index.js`,详情见这2个文件.
 
