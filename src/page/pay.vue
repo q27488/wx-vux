@@ -22,7 +22,8 @@
     },
     methods:{
       payClick(){
-        console.log("点击了立即支付")
+        console.log("点击了立即支付");
+        this.$router.push({name:"monitorData"})
       }
     }
   }

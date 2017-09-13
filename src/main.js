@@ -3,7 +3,9 @@
 import Vue from 'vue'
 import FastClick from 'fastclick'           //移除移动端点击延迟
 import router from './router'
+import VueResource from 'vue-resource'
 import App from './App'
+import { LoadingPlugin } from 'vux'
 
 //使用highcharts 作为图表插件
 import highcharts from 'highcharts'
@@ -13,6 +15,8 @@ Vue.prototype.$highcharts = highcharts;
 import './assets/css/reset.css'
 import './assets/css/vux-css.css'
 
+Vue.use(VueResource);
+
 //注册title全局指令
 Vue.directive('title', {
   inserted: function (el, binding) {
@@ -21,7 +25,8 @@ Vue.directive('title', {
   }
 })
 
-//仿双击插件
+Vue.use(LoadingPlugin);
+//防双击插件
 // FastClick.attach(document.body)
 
 Vue.config.productionTip = false

@@ -8,7 +8,8 @@
   export default {
     methods:{
       bindClick(){
-        console.log("点了一下绑定按钮")
+        console.log("点了一下绑定按钮");
+        this.$router.push({name:"pay"})
       }
     }
   }

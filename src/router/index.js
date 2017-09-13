@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
 import bind from '@/page/bind'
 import monitorData from '@/page/monitorData'
 import pay from '@/page/pay'
 import hotelService from '@/page/hotelService'
 import noReport from '@/page/noReport'
+import sleepReport from '@/page/sleepReport'
 import sleepTrack from '@/page/sleepTrack'
 
 Vue.use(Router)
@@ -35,7 +37,7 @@ export default new Router({
       name: 'hotelService',
       component: hotelService
     },
-    //酒店服务
+    //没有睡眠报告
     {
       path: '/noReport',
       name: 'noReport',
@@ -46,6 +48,12 @@ export default new Router({
       path: '/sleepTrack',
       name: 'sleepTrack',
       component: sleepTrack
+    },
+    //睡眠报告
+    {
+      path: '/sleepReport',
+      name: 'sleepReport',
+      component: sleepReport
     },
   ]
 })

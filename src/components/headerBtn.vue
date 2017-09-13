@@ -20,7 +20,8 @@
 //        }
         methods:{
           headClick(){
-            console.log("点了一下头像")
+            console.log("点了一下头像");
+            this.$router.push({name:"sleepTrack"})
           }
         }
     }

@@ -8,7 +8,7 @@
         <div class="title" :class="{'first-child':index == 0}">{{item.name}}-{{item.startTime}}-{{item.endTime}}</div>
         <div class="cell" v-for="(itemCell,indexCell) in item.data"
              :class="{'first-child':indexCell == 0,'last-child':indexCell == (item.data.length - 1)}"
-             @click="cellClick">
+             @click="cellClick()">
           昨夜睡眠：{{itemCell.text}}
         </div>
       </div>

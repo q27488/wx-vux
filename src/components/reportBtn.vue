@@ -14,6 +14,7 @@
       methods:{
           reportClick(){
             console.log("点击了生成报告");
+            this.$router.push({name:"sleepReport"})
           }
       }
     }
