@@ -5,10 +5,9 @@
 import Vue from 'vue'
 
 const API_URL = process.env.NODE_ENV === "development"
-  // ?  'http://172.16.1.157:21001'         //开发环境
+  // /?  'http://172.16.1.157:21001'         //开发环境
   ? 'api/'                                  //开发环境
   : '';                                     //部署环境
-
 
 export default {
 

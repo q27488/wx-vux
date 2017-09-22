@@ -25,96 +25,96 @@
         </div>
       </div>
       <!--睡眠时相图谱-->
-      <div class="section">
-        <div class="title-text">睡眠时相图谱</div>
-        <div class="sleepTimeBILegend">
-          <div class="legend" v-for="(item,index) in sleepTimeOptions.text">
-            <span class="legendSpan" v-bind:style="{background:sleepTimeOptions.colors[index]}"></span>
-            {{item}}
-          </div>
-        </div>
-        <canvas id="sleepTimeBI" width="320" height="320"></canvas>
-        <div class="sleepInfo">
-          <div class="info-section">
-            <div class="info-title-moon" @click="changeShowDes('totalSleepTime')">
-              <img src="../assets/img/icon_sleepMoon.png" alt="" class="sleepMoon">
-              睡眠总长：{{totalSleepTime}}
-            </div>
-            <div class="info-des info-des-left" v-if="showDes == 'totalSleepTime'">
-              从开始睡眠到结束睡眠的时间
-            </div>
-          </div>
-          <div class="info-section">
-            <div class="info-title" @click="changeShowDes('deepSleepTime')">深睡时长：{{deepSleepTime}}</div>
-            <div class="info-title" @click="changeShowDes('fallAsleep')">入睡时长：{{fallAsleep}}</div>
-            <div class="info-des info-des-left" v-if="showDes == 'deepSleepTime'">
-              睡眠过程中，呼吸心跳变得很慢，肌肉放松，血压下降，呼吸更有规律，大脑对外界的反应不灵敏，这一阶段为深睡阶段。深睡阶段，脑垂体会释放生长激素，刺激组织生长和肌肉修复。只有进入深睡阶段，人体才开始从睡眠获益。保证一定的深睡时长，才能保证整体睡眠质量。
-            </div>
-            <div class="info-des info-des-right" v-if="showDes == 'fallAsleep'">
-              人体清醒状态下，大脑皮质内神经细胞处于兴奋状态，开始准备入睡时，大脑皮质内神经细胞由兴奋状态转换成抑制状态，当抑制作用在大脑皮质内占优势的时候，人就会进入睡眠状态。这一阶段所需的时间，即称为入睡时长。
-            </div>
-          </div>
-          <div class="info-section">
-            <div class="info-title" @click="changeShowDes('middleSleep')">中睡时长：{{middleSleep}}</div>
-            <div class="info-title" @click="changeShowDes('leaveBed')">睡中清醒：{{leaveBed}}次</div>
-            <div class="info-des info-des-left" v-if="showDes == 'middleSleep'">
-              中睡是介于深睡眠状态和浅睡眠状态之间的阶段，这一段睡眠的时长为中睡时长。
-            </div>
-            <div class="info-des info-des-right" v-if="showDes == 'leaveBed'">
-              睡眠过程中由于外界干扰或自身身体原因导致清醒的次数。
-            </div>
-          </div>
-          <div class="info-section">
-            <div class="info-title" @click="changeShowDes('shallowSleepTime')">浅睡时长：{{shallowSleepTime}}</div>
-            <div class="info-title" @click="changeShowDes('sleepAge')">睡眠年龄：{{sleepAge}}</div>
-            <div class="info-des info-des-left" v-if="showDes == 'shallowSleepTime'">
-              睡眠过程中，身体呈放松状态，呼吸心跳比清醒状态时慢，体温略微降低，体动相对活跃的阶段为浅睡阶段。这一段睡眠的时长为浅睡时长。
-            </div>
-            <div class="info-des info-des-right" v-if="showDes == 'sleepAge'">
-              综合睡眠时长、睡眠效率两项指标得出的睡眠状态，反推对应的年龄阶段，与实际年龄不完全一致。当睡眠时长达到7-9小时，且睡眠效率较高，则睡眠年龄趋向年轻化；如果睡眠时长不足7小时，且睡眠效率较低，则睡眠年龄趋向老年化。睡眠年龄可以让睡眠者更直观的了解自己的睡眠质量大概处于什么年龄水平。
-            </div>
-          </div>
-          <div class="info-section">
-            <div class="info-title" @click="changeShowDes('eyeSleepTime')">清醒时长：{{eyeSleepTime}}</div>
-            <div class="info-title" @click="changeShowDes('sleepEfficiency')">睡眠效率：{{sleepEfficiency}}%</div>
-            <div class="info-des info-des-left" v-if="showDes == 'eyeSleepTime'">
-              睡中清醒后，保持意识清醒的时长。
-            </div>
-            <div class="info-des info-des-right" v-if="showDes == 'sleepEfficiency'">
-              睡眠效率是指人每晚的睡眠时长（深睡+中睡+浅睡）/每晚的睡眠总时间的比值。睡眠效率评分可以直观的表现在整晚睡眠过程中，“睡着”状态所占的时间比例。如果入睡较快、夜间很少醒来、或夜醒后能快速重新入睡，表示没有入睡困难、失眠等情况，则睡眠效率评分较高。睡眠效率是评定睡眠质量的重要指标，一般来说，睡眠效率越高，睡眠质量就越好。
-            </div>
-          </div>
-          <div class="BI-des">
-            <div class="BI-des-title" @click="changeShowBIDes('sleepTimeBI')">图谱解析</div>
-            <div class="BI-des-text" v-if="showBIDes == 'sleepTimeBI'" v-html="sleepdataAnalysis">
-            </div>
-          </div>
-        </div>
-      </div>
+      <!--<div class="section">-->
+        <!--<div class="title-text">睡眠时相图谱</div>-->
+        <!--<div class="sleepTimeBILegend">-->
+          <!--<div class="legend" v-for="(item,index) in sleepTimeOptions.text">-->
+            <!--<span class="legendSpan" v-bind:style="{background:sleepTimeOptions.colors[index]}"></span>-->
+            <!--{{item}}-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<canvas id="sleepTimeBI" width="320" height="320"></canvas>-->
+        <!--<div class="sleepInfo">-->
+          <!--<div class="info-section">-->
+            <!--<div class="info-title-moon" @click="changeShowDes('totalSleepTime')">-->
+              <!--<img src="../assets/img/icon_sleepMoon.png" alt="" class="sleepMoon">-->
+              <!--睡眠总长：{{totalSleepTime}}-->
+            <!--</div>-->
+            <!--<div class="info-des info-des-left" v-if="showDes == 'totalSleepTime'">-->
+              <!--从开始睡眠到结束睡眠的时间-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="info-section">-->
+            <!--<div class="info-title" @click="changeShowDes('deepSleepTime')">深睡时长：{{deepSleepTime}}</div>-->
+            <!--<div class="info-title" @click="changeShowDes('fallAsleep')">入睡时长：{{fallAsleep}}</div>-->
+            <!--<div class="info-des info-des-left" v-if="showDes == 'deepSleepTime'">-->
+              <!--睡眠过程中，呼吸心跳变得很慢，肌肉放松，血压下降，呼吸更有规律，大脑对外界的反应不灵敏，这一阶段为深睡阶段。深睡阶段，脑垂体会释放生长激素，刺激组织生长和肌肉修复。只有进入深睡阶段，人体才开始从睡眠获益。保证一定的深睡时长，才能保证整体睡眠质量。-->
+            <!--</div>-->
+            <!--<div class="info-des info-des-right" v-if="showDes == 'fallAsleep'">-->
+              <!--人体清醒状态下，大脑皮质内神经细胞处于兴奋状态，开始准备入睡时，大脑皮质内神经细胞由兴奋状态转换成抑制状态，当抑制作用在大脑皮质内占优势的时候，人就会进入睡眠状态。这一阶段所需的时间，即称为入睡时长。-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="info-section">-->
+            <!--<div class="info-title" @click="changeShowDes('middleSleep')">中睡时长：{{middleSleep}}</div>-->
+            <!--<div class="info-title" @click="changeShowDes('leaveBed')">睡中清醒：{{leaveBed}}次</div>-->
+            <!--<div class="info-des info-des-left" v-if="showDes == 'middleSleep'">-->
+              <!--中睡是介于深睡眠状态和浅睡眠状态之间的阶段，这一段睡眠的时长为中睡时长。-->
+            <!--</div>-->
+            <!--<div class="info-des info-des-right" v-if="showDes == 'leaveBed'">-->
+              <!--睡眠过程中由于外界干扰或自身身体原因导致清醒的次数。-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="info-section">-->
+            <!--<div class="info-title" @click="changeShowDes('shallowSleepTime')">浅睡时长：{{shallowSleepTime}}</div>-->
+            <!--<div class="info-title" @click="changeShowDes('sleepAge')">睡眠年龄：{{sleepAge}}</div>-->
+            <!--<div class="info-des info-des-left" v-if="showDes == 'shallowSleepTime'">-->
+              <!--睡眠过程中，身体呈放松状态，呼吸心跳比清醒状态时慢，体温略微降低，体动相对活跃的阶段为浅睡阶段。这一段睡眠的时长为浅睡时长。-->
+            <!--</div>-->
+            <!--<div class="info-des info-des-right" v-if="showDes == 'sleepAge'">-->
+              <!--综合睡眠时长、睡眠效率两项指标得出的睡眠状态，反推对应的年龄阶段，与实际年龄不完全一致。当睡眠时长达到7-9小时，且睡眠效率较高，则睡眠年龄趋向年轻化；如果睡眠时长不足7小时，且睡眠效率较低，则睡眠年龄趋向老年化。睡眠年龄可以让睡眠者更直观的了解自己的睡眠质量大概处于什么年龄水平。-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="info-section">-->
+            <!--<div class="info-title" @click="changeShowDes('eyeSleepTime')">清醒时长：{{eyeSleepTime}}</div>-->
+            <!--<div class="info-title" @click="changeShowDes('sleepEfficiency')">睡眠效率：{{sleepEfficiency}}%</div>-->
+            <!--<div class="info-des info-des-left" v-if="showDes == 'eyeSleepTime'">-->
+              <!--睡中清醒后，保持意识清醒的时长。-->
+            <!--</div>-->
+            <!--<div class="info-des info-des-right" v-if="showDes == 'sleepEfficiency'">-->
+              <!--睡眠效率是指人每晚的睡眠时长（深睡+中睡+浅睡）/每晚的睡眠总时间的比值。睡眠效率评分可以直观的表现在整晚睡眠过程中，“睡着”状态所占的时间比例。如果入睡较快、夜间很少醒来、或夜醒后能快速重新入睡，表示没有入睡困难、失眠等情况，则睡眠效率评分较高。睡眠效率是评定睡眠质量的重要指标，一般来说，睡眠效率越高，睡眠质量就越好。-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="BI-des">-->
+            <!--<div class="BI-des-title" @click="changeShowBIDes('sleepTimeBI')">图谱解析</div>-->
+            <!--<div class="BI-des-text" v-if="showBIDes == 'sleepTimeBI'" v-html="sleepdataAnalysis">-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
       <!--心率呼吸图谱-->
-      <img src="../assets/img/brLine.png" alt="" class="brLine">
-      <div class="section">
-        <div class="title-text">心率呼吸图谱</div>
-        <div id="xlHxBI" style="width: 100%;height: 300px;"></div>
-        <!--<div class="BI-des">-->
-        <!--<div class="BI-des-title" @click="changeShowBIDes('xlHxBI')">图谱解析</div>-->
-        <!--<div class="BI-des-text" v-if="showBIDes == 'xlHxBI'" v-html="">-->
-        <!--</div>-->
-        <!--</div>-->
-      </div>
+      <!--<img src="../assets/img/brLine.png" alt="" class="brLine">-->
+      <!--<div class="section">-->
+        <!--<div class="title-text">心率呼吸图谱</div>-->
+        <!--<div id="xlHxBI" style="width: 100%;height: 300px;"></div>-->
+        <!--&lt;!&ndash;<div class="BI-des">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="BI-des-title" @click="changeShowBIDes('xlHxBI')">图谱解析</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="BI-des-text" v-if="showBIDes == 'xlHxBI'" v-html="">&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--</div>-->
       <!--体动图谱-->
-      <img src="../assets/img/brLine.png" alt="" class="brLine">
-      <div class="section">
-        <div class="title-text">体动图谱</div>
-        <div id="doingBI" style="width: 100%;height: 300px;"></div>
-        <div class="BI-des">
-          <div class="BI-des-title" @click="changeShowBIDes('doingBI')">图谱解析</div>
-          <div class="BI-des-text" v-if="showBIDes == 'doingBI'" v-html="bodyMoveAnalysis">
-          </div>
-        </div>
-      </div>
+      <!--<img src="../assets/img/brLine.png" alt="" class="brLine">-->
+      <!--<div class="section">-->
+        <!--<div class="title-text">体动图谱</div>-->
+        <!--<div id="doingBI" style="width: 100%;height: 300px;"></div>-->
+        <!--<div class="BI-des">-->
+          <!--<div class="BI-des-title" @click="changeShowBIDes('doingBI')">图谱解析</div>-->
+          <!--<div class="BI-des-text" v-if="showBIDes == 'doingBI'" v-html="bodyMoveAnalysis">-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
       <!--睡眠信息评估图谱-->
-      <img src="../assets/img/brLine.png" alt="" class="brLine">
+      <!--<img src="../assets/img/brLine.png" alt="" class="brLine">-->
       <div class="section">
         <div class="title-text">睡眠信息评估图谱</div>
         <div id="spiderBI" style="width: 100%;height: 300px;"></div>
@@ -171,7 +171,7 @@
         sleepEndShow: 0,                //报告结束时间戳
         sleepEndUnion: "PM",        //时间单位
         organizationName: "",        //住址名称
-        score: 0,                    //得分
+        score: 100,                    //得分
         date: 0,                     //报告时间戳
         //睡眠时相图谱参数
         sleepTimeOptions: {
@@ -181,7 +181,43 @@
           timeSpace: ['01:00', '02:00', '03:00', '04:00', '05:00'],
           startTime: 0,
           endTime: 0,
-          data: []
+          data: [
+            {
+              type: 0,
+              begin: 100,
+              end: 110,
+            },
+            {
+              type: -1,
+              begin: 115,
+              end: 120,
+            },
+            {
+              type: -2,
+              begin: 120,
+              end: 145,
+            },
+            {
+              type: -3,
+              begin: 145,
+              end: 155,
+            },
+            {
+              type: -2,
+              begin: 155,
+              end: 175,
+            },
+            {
+              type: -1,
+              begin: 175,
+              end: 185,
+            },
+            {
+              type: 0,
+              begin: 210,
+              end: 250,
+            },
+          ]
         },
         //睡眠数据
         totalSleepTime: "暂无数据",      //睡眠总长
@@ -205,16 +241,28 @@
       }
     },
     mounted() {
-        this.initSleepTime();
-        devApi.getSleepReport()
-          .then((res) => {
-            if (res.code === 66666) {
-              this.updateSleep(res);
-              this.sleepShow = true;
-            } else {
-              this.$router.push({name: "noReport"})
-            }
-          });
+        this.initScore();
+        this.initSleepSpider([{
+          name: "这是第1个label",
+          level: 0,
+        }, {
+          name: "这是第2个label",
+          level: 1,
+        }, {
+          name: "这是第3个label",
+          level: 2,
+        }, {
+          name: "这是第4个label",
+          level: 3,
+        }, {
+          name: "这是第5个label",
+          level: 4,
+        },]);
+
+        this.$nextTick(() => {
+          let wrapper = document.querySelector('.wrapper')
+          this.scroll = new BScroll(wrapper, {click: true})
+        })
     },
     methods: {
       //初始化睡眠得分
@@ -223,6 +271,7 @@
         let Bi_width = sleepScore.offsetWidth;
         this.sleepScoreOptions.width = Bi_width;
         this.sleepScoreOptions.height = Bi_width;
+        this.sleepScoreOptions.present = 100;
         sleepScore.style.height = Bi_width + "px";
         scoreAnimation(this.sleepScoreOptions);
       },

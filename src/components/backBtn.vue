@@ -1,6 +1,6 @@
 <template>
     <div class="backBtn" @click.stop="backClick">
-      返回主页
+      返回
     </div>
 </template>
 
@@ -13,8 +13,8 @@
         },
       methods:{
           backClick(){
-            console.log("点击了一下返回主页")
-            this.$router.push({name:"monitorData"})
+            console.log("点击了一下返回")
+            this.$router.go(-1)
           }
       }
     }

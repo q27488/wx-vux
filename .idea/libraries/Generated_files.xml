@@ -2,31 +2,43 @@
   <library name="Generated files" type="javaScript">
     <properties>
       <sourceFilesUrls>
-        <item url="file://$PROJECT_DIR$/dist/src/assets/js/util.js" />
-        <item url="file://$PROJECT_DIR$/dist/src/store/mutation-types.js" />
-        <item url="file://$PROJECT_DIR$/dist/src/main.js" />
-        <item url="file://$PROJECT_DIR$/dist/src/api/devApi.js" />
+        <item url="file://$PROJECT_DIR$/dist/wx/static/js/manifest.0ee80d01ea96bbe57c76.js" />
         <item url="file://$PROJECT_DIR$/dist/src/assets/js/scoreAnimation.js" />
-        <item url="file://$PROJECT_DIR$/dist/src/assets/js/spiderChart.js" />
-        <item url="file://$PROJECT_DIR$/dist/config/index.js" />
-        <item url="file://$PROJECT_DIR$/dist/src/assets/js/cylindricalBi.js" />
-        <item url="file://$PROJECT_DIR$/dist/src/assets/js/Bi.js" />
-        <item url="file://$PROJECT_DIR$/dist/src/store/modules/modal.js" />
-        <item url="file://$PROJECT_DIR$/dist/src/store/index.js" />
+        <item url="file://$PROJECT_DIR$/dist/wx/static/js/vendor.af994a0dd43096823c30.js" />
+        <item url="file://$PROJECT_DIR$/dist/src/api/devApi.js" />
+        <item url="file://$PROJECT_DIR$/dist/wx/static/js/app.2ea319cc5bda78034843.js" />
       </sourceFilesUrls>
     </properties>
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/dist/src/assets/js/util.js" />
-      <root url="file://$PROJECT_DIR$/dist/src/store/mutation-types.js" />
       <root url="file://$PROJECT_DIR$/dist/src/main.js" />
-      <root url="file://$PROJECT_DIR$/dist/src/api/devApi.js" />
-      <root url="file://$PROJECT_DIR$/dist/src/assets/js/scoreAnimation.js" />
-      <root url="file://$PROJECT_DIR$/dist/src/assets/js/spiderChart.js" />
+      <root url="file://$PROJECT_DIR$/dist/dist/static/js/app.3ca293e897679836fc31.js" />
+      <root url="file://$PROJECT_DIR$/dist/src/store/mutation-types.js" />
+      <root url="file://$PROJECT_DIR$/dist/dist/static/js/manifest.f3707090a41d9cb7ecce.js" />
       <root url="file://$PROJECT_DIR$/dist/config/index.js" />
+      <root url="file://$PROJECT_DIR$/dist/src/assets/js/util.js" />
+      <root url="file://$PROJECT_DIR$/dist/src/assets/js/spiderChart.js" />
       <root url="file://$PROJECT_DIR$/dist/src/assets/js/cylindricalBi.js" />
       <root url="file://$PROJECT_DIR$/dist/src/assets/js/Bi.js" />
       <root url="file://$PROJECT_DIR$/dist/src/store/modules/modal.js" />
       <root url="file://$PROJECT_DIR$/dist/src/store/index.js" />
+      <root url="file://$PROJECT_DIR$/dist/dist/static/js/vendor.af994a0dd43096823c30.js" />
+      <root url="file://$PROJECT_DIR$/dist/src/main.js" />
+      <root url="file://$PROJECT_DIR$/dist/dist/static/js/app.3ca293e897679836fc31.js" />
+      <root url="file://$PROJECT_DIR$/dist/src/store/mutation-types.js" />
+      <root url="file://$PROJECT_DIR$/dist/dist/static/js/manifest.f3707090a41d9cb7ecce.js" />
+      <root url="file://$PROJECT_DIR$/dist/config/index.js" />
+      <root url="file://$PROJECT_DIR$/dist/src/assets/js/util.js" />
+      <root url="file://$PROJECT_DIR$/dist/src/assets/js/spiderChart.js" />
+      <root url="file://$PROJECT_DIR$/dist/src/assets/js/cylindricalBi.js" />
+      <root url="file://$PROJECT_DIR$/dist/src/assets/js/Bi.js" />
+      <root url="file://$PROJECT_DIR$/dist/src/store/modules/modal.js" />
+      <root url="file://$PROJECT_DIR$/dist/src/store/index.js" />
+      <root url="file://$PROJECT_DIR$/dist/dist/static/js/vendor.af994a0dd43096823c30.js" />
+      <root url="file://$PROJECT_DIR$/dist/wx/static/js/manifest.0ee80d01ea96bbe57c76.js" />
+      <root url="file://$PROJECT_DIR$/dist/src/assets/js/scoreAnimation.js" />
+      <root url="file://$PROJECT_DIR$/dist/wx/static/js/vendor.af994a0dd43096823c30.js" />
+      <root url="file://$PROJECT_DIR$/dist/src/api/devApi.js" />
+      <root url="file://$PROJECT_DIR$/dist/wx/static/js/app.2ea319cc5bda78034843.js" />
     </CLASSES>
     <SOURCES />
   </library>

@@ -21,6 +21,7 @@
         methods:{
           headClick(){
             console.log("点了一下头像");
+            this.$store.commit("SHOW_ALERT", {msg: "输入alert提示"});
             this.$router.push({name:"sleepTrack"})
           }
         }
@@ -37,6 +38,7 @@
     height:44px;
     border-radius: 50%;
     overflow: hidden;
+    z-index: 9;
   }
   .container .headImg{
     display: block;

@@ -32,7 +32,7 @@ function scoreAnimation(options) {
     arc_Endcolor: "#2ddd64", //圆弧终点圆点 -颜色
     arc_EndlineWidth: "8", //圆弧终点宽度 -颜色
 
-    present: "50", //数值
+    present: "100", //数值
   }
 
   if (Object.prototype.toString.call(options) === '[object Object]') { // 判断传入参数类型
