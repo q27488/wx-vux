@@ -68,7 +68,7 @@ npm run build --report
 
 > 2017/09/22：
   
-  1.使用vuex管理全局的alert弹窗，使用方法:`this.$store.commit("SHOW_ALERT", {msg: "输入alert提示"});`
-  2.新增`src/api/devApi.js`文件，用于部署线上使用（demo版本可忽略）
-  3.优化**实时数据**`src/page/monitoData.vue`页面动画
-  4.更新**睡眠报告**`src/page/sleepReport.vue`
+  1.使用vuex管理全局的alert弹窗，使用方法:`this.$store.commit("SHOW_ALERT", {msg: "输入alert提示"});`  
+  2.新增`src/api/devApi.js`文件，用于部署线上使用（demo版本可忽略）  
+  3.优化**实时数据**`src/page/monitoData.vue`页面动画  
+  4.更新**睡眠报告**`src/page/sleepReport.vue`  
