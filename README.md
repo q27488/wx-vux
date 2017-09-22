@@ -1,7 +1,7 @@
 # wx-vux
 
 > 微信移动端项目，使用vue的移动UI框架[vux](https://vux.li/)  
-> 项目demo:(http://101.200.55.163:8080/wx/index.html)[http://101.200.55.163:8080/wx/index.html]
+> 项目demo: http://101.200.55.163:8080/wx/index.html
 
 ## Build Setup
 
