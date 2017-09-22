@@ -37,6 +37,7 @@
     color: #fff;
     /*box-shadow: 0 0 20px 6px rgba(53,81,202,0.8);*/
     animation: reportShadow 3s infinite;
+    z-index: 10;
   }
 
   @keyframes reportShadow {

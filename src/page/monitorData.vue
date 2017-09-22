@@ -3,22 +3,21 @@
     <div v-title>当前状态</div>
     <page :currentPage="currentPage">
       <section class="animate monitor-wrapper" ref="section1">
-        <header-btn
-          :headSrc="'http://p1.music.126.net/4Fx8VLiwwpj1DExmLiG1og==/18538865557829806.jpg?param=200y200'">
-        </header-btn>
-        <div class="model-data" v-if="model_switch == 'data'">
+        <reportBtn></reportBtn>
+        <header-btn></header-btn>
+        <div class="model-data" v-show="model_switch == 'data'">
           <div class="monitor-data">
             <img src="../assets/img/outline1.png" alt="" class="outer1">
             <img src="../assets/img/outline2.png" alt="" class="outer2">
             <div class="data-wrapper">
               <div class="icon-wrapper">
-                <img src="../assets/img/icon_hx.png" alt="呼吸">
-                <img src="../assets/img/icon_xt.png" alt="心跳">
+                <img src="../assets/img/icon_hx.png" alt="呼吸" class="icon-wrapper-img">
+                <img src="../assets/img/icon_xt.png" alt="心跳" class="icon-wrapper-img">
               </div>
               <div class="data-cont">
-                {{hxData}}
-                <small>丨</small>
-                {{xtData}}
+                <span :class="hxClass" id="leftData">{{hxData}}</span>
+                <small id="middleData">丨</small>
+                <span :class="xtClass" id="rightData">{{xtData}}</span>
               </div>
               <div class="oldData-cont">
                 {{hxData_old}} &nbsp;&nbsp; {{xtData_old}}
@@ -26,10 +25,10 @@
             </div>
           </div>
           <div class="bi-data">
-            <div class="device-status" v-show="device_status">
-              <img src="../assets/img/noBreath.png" alt="" v-if="device_status == 'noBreath'">
-              <img src="../assets/img/noSignal.png" alt="" v-if="device_status == 'noSignal'">
-              <img src="../assets/img/bodyDoing.png" alt="" v-if="device_status == 'bodyDoing'">
+            <div class="device-status" :class="{ hidden:device_status == ''}">
+              <img src="../assets/img/noBreath.png" alt="" v-show="device_status == 'noBreath'">
+              <img src="../assets/img/wayForBed.png" alt="" v-show="device_status == 'wayForBed'">
+              <img src="../assets/img/bodyDoing.png" alt="" v-show="device_status == 'bodyDoing'">
             </div>
             <div class="data-section">
               <div class="title">
@@ -47,31 +46,28 @@
             </div>
           </div>
         </div>
-        <div class="model-error" v-else>
-          <img src="../assets/img/model_farWay.png" alt="" class="errTipImg1" v-if="model_switch == 'farWay'">
-          <img src="../assets/img/model_sleep.png" alt="" class="errTipImg2"  v-if="model_switch == 'sleep'">
+        <div class="model-error" v-show="model_switch != 'data'">
+          <img src="../assets/img/model_farWay.png" alt="" class="errTipImg1" v-show="model_switch == 'farWay'">
+          <img src="../assets/img/model_sleep.png" alt="" class="errTipImg2" v-show="model_switch == 'sleep'">
+          <img src="../assets/img/model_noSignal.png" alt="" class="errTipImg3" v-show="model_switch == 'noSignal'" onclick="location.reload()">
         </div>
       </section>
     </page>
     <page :currentPage="currentPage">
       <section class="animate" ref="section2">
-        <x-button class="button" @click.native="unbindShow = true">设备解绑</x-button>
+        <x-button class="button" @click.native="unbindShow = true" v-if="currentPage == 2">设备解绑</x-button>
       </section>
     </page>
-
     <!-- 弹窗 -->
-    <reportBtn></reportBtn>
     <page-controller :pageNum="pageNum" :currentPage="currentPage" @changePage="changePage"
                      :option="controllerOption"></page-controller>
-
     <confirm v-model="unbindShow"
              @on-cancel="this.unbindShow = false"
              @on-confirm="unbindClick"
              @on-show=""
              @on-hide="">
-      确定解绑吗？
+      设备解绑后将无法收到您的睡眠数据,<br>确定要解绑设备？
     </confirm>
-    <alert v-model="alertShow" @on-show="" @on-hide="">{{alertText}}</alert>
   </div>
 </template>
 
@@ -80,13 +76,36 @@
   import reportBtn from "../components/reportBtn.vue"
   import Page from '../components/vue-fullpage/Page.vue';
   import PageController from '../components/vue-fullpage/PageController.vue';
-  import {XButton, Alert, Confirm} from 'vux'
+  import {XButton, Confirm} from 'vux'
 
-  import {hxBi_chart} from "../assets/js/Bi.js"
+  import {hxBi_chart, xtBi_chart} from "../assets/js/Bi.js"
+  //http
+  import devApi from "../api/devApi"
+  //mqtt
+  var client = null;
+  var clientId = null;
+  var connected = false;
+  var dataTopicName = null;
+  var hostname = "www.yjr913.com";
+  var isShowRates = true;
+  var mqttTimer = null; //用于3s没收到mqtt 报错：网络服务异常
 
   export default {
     data() {
       return {
+        //mqtt
+        mqtt: {
+          port: "8084",
+          path: "",
+          user: "zkzkEmqttdWeb@201612131430",
+          pass: "J3ejdVfKVGEE3xJEm4YDRiZdLbEH5dAv3NiV4S@zkzkWeb1431",
+          keepAlive: 20,
+          timeout: 3,
+          ssl: true,
+          cleanSession: true,
+        },
+        mqttTimer: "",       //超过5s未收到MQTT，则报网络异常
+
         currentPage: 1,
         options: [{
           // the color of background
@@ -122,37 +141,27 @@
           loop: false
         },
         unbindShow: false,
-        alertShow: false,
-        alertText: "点击了解绑按钮",
-        xtData: "00",
-        xtData_old: "20",
+        xtData: "--",
+        xtData_old: "--",
         xtText: "心跳正常",
-        hxData: "00",
-        hxData_old: "30",
+        xtClass: "",     //tooHigh / tooLow
+        hxData: "--",
+        hxData_old: "--",
         hxText: "呼吸正常",
+        hxClass: "",
 
-        device_status: "noSignal",    //设备状态
+        device_status: "",    //设备状态
 
         //模式切换
-        model_switch:"data",
-      }
-    },
-    watch: {
-      //自动关闭弹窗
-      alertShow(val) {
-        console.log(val);
-        if (val) {
-          setTimeout(() => {
-            this.alertShow = false;
-          }, 1500)
-        }
-      },
-      //数据补0
-      xtData(val) {
-        if (val == this.xtData) return;
-        this.xtData = this.PrefixInteger(0, 2)
-      }
+        model_switch: "data",
 
+        //BI
+        hxBi_index: 0,
+        hxBi_chart: "",
+        xtBi_index: 0,
+        xtBi_chart: "",
+
+      }
     },
     computed: {
       // 总page数
@@ -169,15 +178,24 @@
           child.option = childOption;
         }
       });
-      this.$nextTick(()=>{
-        hxBi_chart(this,"hxBI");
-      })
+
+      this.$nextTick(() => {
+        this.hxBi_chart = hxBi_chart(this, "hxBI");
+        console.log(this.hxBi_chart)
+        this.xtBi_chart = xtBi_chart(this, "xtBI");
+      });
+      setInterval(()=>{
+        let num = parseInt(Math.random() *100);
+        this.updateXtHx(num,num/2);
+      },1000)
+
     },
     methods: {
       //数字前置补0
       PrefixInteger(num, n) {
         return (Array(n).join(0) + num).slice(-n);
       },
+      //改变页数
       changePage(index) {
         // beforeLeave Hook
         let beforeIndex = this.currentPage - 1;
@@ -192,15 +210,82 @@
           typeof enterFunction === 'function' && enterFunction.call(this, this.$children[nextIndex]);
         })
       },
+      //解绑按钮
       unbindClick() {
-        this.unbindShow = false;
-        this.alertShow = true;
+        this.$router.push({name: "bind"})
+      },
+
+      updateXtHx(hxNum,xtNum) {
+          this.updateBI_hx(hxNum);
+          this.updateBI_xt(xtNum);
+          if (this.xtData_old != this.xtData) {
+            this.xtData_old = this.xtData;
+          }
+          this.xtData = xtNum;
+          if (this.xtData >= 100) {
+            console.log("心跳过快");
+            this.xtText = "心跳过快";
+            this.xtClass = "tooHigh";
+          } else if (this.xtData <= 45) {
+            console.log("心跳过慢");
+            this.xtText = "心跳过慢";
+            this.xtClass = "tooLow";
+          } else {
+            this.xtText = "心跳正常";
+            this.xtClass = "";
+          }
+          if (this.hxData_old != this.hxData) {
+            this.hxData_old = this.hxData;
+          }
+          this.hxData = hxNum;
+          if (this.hxData >= 100) {
+            console.log("呼吸过快");
+            this.hxText = "呼吸过快";
+            this.hxClass = "tooHigh";
+          } else if (this.hxData <= 45) {
+            console.log("呼吸过慢");
+            this.hxText = "呼吸过慢";
+            this.hxClass = "tooLow";
+          } else {
+            this.hxText = "呼吸正常";
+            this.hxClass = "";
+          }
+      },
+      updateBI_hx(data) {
+        let series = this.hxBi_chart.series[0];
+        series.addPoint([this.hxBi_index, data], true, false);
+        this.hxBi_index++;
+        if (this.hxBi_index == 99) {
+          this.hxBi_index = 0;
+          series.update({
+            name: '呼吸数据',
+            data: [{x: this.hxBi_index, y: data}],
+            marker: {
+              enabled: false
+            }
+          });
+        }
+      },
+      updateBI_xt(data) {
+        let series = this.xtBi_chart.series[0];
+        series.addPoint([this.xtBi_index, data], true, false);
+        this.xtBi_index++;
+        if (this.xtBi_index == 99) {
+          this.xtBi_index = 0;
+          series.update({
+            name: '心跳数据',
+            data: [{x: this.xtBi_index, y: data}],
+            marker: {
+              enabled: false
+            }
+          });
+        }
       },
     },
     components: {
       headerBtn, reportBtn,
       Page, PageController,
-      Alert, Confirm, XButton
+      Confirm, XButton
     },
 
   }
@@ -229,6 +314,7 @@
   }
 
   .monitor-wrapper {
+    position: relative;
     display: block;
     width: 100%;
     height: 100%;
@@ -274,7 +360,7 @@
     background: #3551ca;
     text-align: center;
     border-radius: 50%;
-    /*box-shadow: 0 0 0 20px rgba(53,81,202,0.5);*/
+    /*box-shadow: 0 0 0 14px rgba(53,81,202,0.5);*/
     animation: boxShadow 5s infinite;
 
     .icon-wrapper {
@@ -282,11 +368,12 @@
         display: inline-block;
         /*width: 16px;*/
         height: 16px;
-        margin: 0 10px;
+        margin: 0 14px;
       }
     }
     .data-cont {
-      font-size: 32px;
+      position: relative;
+      font-size: 28px;
       color: #fff;
       vertical-align: bottom;
       line-height: 44px;
@@ -297,8 +384,15 @@
     }
 
     .oldData-cont {
-      font-size: 21px;
-      color: #77ffff;
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .tooHigh {
+      color: #ff7e00;
+    }
+    .tooLow {
+      color: #f1ef54;
     }
   }
 
@@ -384,24 +478,53 @@
   }
 
   /*模式切换*/
-  .model-data,.model-error{
+  .model-data, .model-error {
     position: relative;
     height: 100%;
     overflow: hidden;
   }
-  .model-error .errTipImg1{
+
+  .model-error .errTipImg1 {
     display: block;
     width: 60%;
     margin: 30% auto;
   }
-  .model-error .errTipImg2{
+
+  .model-error .errTipImg2 {
     display: block;
     width: 70%;
     margin: 30% auto;
   }
+  .model-error .errTipImg3 {
+    display: block;
+    width: 40%;
+    margin: 30% auto;
+  }
 
-  #hxBI{
+  #hxBI, #xtBI {
     width: 100%;
     height: calc(~"100% - 42px");
   }
+
+  .hidden {
+    visibility: hidden !important;
+  }
+  #leftData{
+    display: inline-block;
+    width: calc(~"50% - 12px");
+    float: left;
+    text-align: right;
+
+  }
+  #rightData{
+    display: inline-block;
+    width: calc(~"50% - 12px");
+    float: right;
+    text-align: left;
+  }
+  /*#middleData{*/
+  /*display: inline-block;*/
+  /*width: 2%;*/
+  /*text-align: center;*/
+  /*}*/
 </style>

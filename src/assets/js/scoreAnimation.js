@@ -429,7 +429,7 @@ function drawAllLine(context,contWidth, radius,lineColor) {
   P6[0].y = tempP.y + 1 * window.devicePixelRatio;
   //P6结束位置
   P6[1].x = tempP.x;
-  P6[1].y = contWidth * 0.9;
+  P6[1].y = Math.floor(contWidth * 0.9) - 1 * window.devicePixelRatio ;
   drawLine(context, P6[0], P6[1],lineColor, 50, 1000);
 
   //横线

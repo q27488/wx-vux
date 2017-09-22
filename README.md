@@ -66,3 +66,11 @@ npm run build --report
    2.使用express读取db.json的假数据
      `npm install body-parse --save` 后修改`build/dev-server.js`与`config/index.js`,详情见这2个文件.
 
+> 2017/09/22：
+  
+  1.使用vuex管理全局的alert弹窗，使用方法:`this.$store.commit("SHOW_ALERT", {msg: "输入alert提示"});`
+  2.新增`src/api/devApi.js`文件，用于部署线上使用（demo版本可忽略）
+  3.优化**实时数据**`src/page/monitoData.vue`页面动画
+  3.更新**睡眠报告**`src/page/sleepReport.vue`大量内容
+      3.1 根据业务定制化绘制柱形图canvas-BI:"睡眠时相图谱"-`src/assets/js/cylindricalBi.js`
+      3.2 根据业务定制化绘制蜘蛛图canvas-BI:"睡眠信息评估图谱"-`src/assets/js/spiderChart.js`

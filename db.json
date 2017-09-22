@@ -2,7 +2,7 @@
   "test": {
     "aaa": "bbb"
   },
-  "report": {
+  "sleep-report": {
     "sleepData": [
       {
         "begin": 1505061735000,
@@ -5032,5 +5032,96 @@
     "sleepEfficiency": "91",
     "sleepStart": 1505061735000,
     "totalSleepTime": 407
+  },
+  "sleepwork":{
+    "bindLogId": 1,
+    "code": 66666,
+    "reportCount": 12,
+    "userReportInHotels": [
+      {
+        "deviceId": "1",
+        "hotelName": "新加坡皇家假日酒店",
+        "time": "2017-03-18 19:57:59-2017-03-30 19:30:51",
+        "userReports": [
+          {
+            "content": "昨晚睡得很香",
+            "created": "2017-03-30 17:30:54",
+            "reportId": 1,
+            "title": "睡眠效果有所提升哦",
+            "type": 10
+          },
+          {
+            "content": "中午12点到2点睡了个美美的午觉",
+            "created": "2017-03-30 14:30:59",
+            "reportId": 2,
+            "title": "午休",
+            "type": 2
+          }
+        ]
+      },
+      {
+        "deviceId": "2",
+        "hotelName": "维也纳大学城酒店",
+        "time": "2017-03-18 19:57:59-2017-03-30 19:30:51",
+        "userReports": [
+          {
+            "content": "昨晚睡得很香+1",
+            "created": "2017-03-30 17:30:54",
+            "reportId": 1,
+            "title": "睡眠效果有所提升哦",
+            "type": 10
+          },
+          {
+            "content": "中午12点到2点睡了个美美的午觉+1",
+            "created": "2017-03-30 14:30:59",
+            "reportId": 2,
+            "title": "午休",
+            "type": 2
+          }
+        ]
+      },
+      {
+        "deviceId": "3",
+        "hotelName": "维也纳大学城酒店",
+        "time": "2017-03-18 19:57:59-2017-03-30 19:30:51",
+        "userReports": [
+          {
+            "content": "昨晚睡得很香+1",
+            "created": "2017-03-30 17:30:54",
+            "reportId": 1,
+            "title": "睡眠效果有所提升哦",
+            "type": 10
+          },
+          {
+            "content": "中午12点到2点睡了个美美的午觉+1",
+            "created": "2017-03-30 14:30:59",
+            "reportId": 2,
+            "title": "午休",
+            "type": 2
+          }
+        ]
+      },
+      {
+        "deviceId": "3",
+        "hotelName": "维也纳大学城酒店",
+        "time": "2017-03-18 19:57:59-2017-03-30 19:30:51",
+        "userReports": [
+          {
+            "content": "昨晚睡得很香+1",
+            "created": "2017-03-30 17:30:54",
+            "reportId": 1,
+            "title": "睡眠效果有所提升哦",
+            "type": 10
+          },
+          {
+            "content": "中午12点到2点睡了个美美的午觉+1",
+            "created": "2017-03-30 14:30:59",
+            "reportId": 2,
+            "title": "午休",
+            "type": 2
+          }
+        ]
+      }
+    ]
   }
 }

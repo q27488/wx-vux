@@ -88,9 +88,8 @@ function cylindricalBi(options) {
     canvas.width = ops.width ;
     canvas.height = ops.height;
   }
-
   //轴
-  drawLine(cx,0,0,0,300,1,'#fff');
+  drawLine(cx,0,20,0,300,1,'#fff');
   drawLine(cx,0,ops.lineX1,270,ops.lineX1,1,'#fff');
   drawLine(cx,0,ops.lineX2,270,ops.lineX2,1,'#fff');
   //刻度-Y
@@ -128,11 +127,18 @@ function cylindricalBi(options) {
       endY = 110 + (item.type * -1) * 50;
       color = ops.colors[item.type * -1];
     }
+
+
+    //绘制入睡时刻图片
     if(imgFlag){
+      //绘制入睡时刻
+      drawDashLine(cx,endX,endY-10,endX,300);
+      cx.fillText("入睡时刻："+dateFormat(ops.data[0].end,"hh:mm"),endX,endY-20)
+
       img.onload = function(){
-        cx.drawImage(img,endX -12,startY - 24);
+        cx.drawImage(img,endX -12,startY - 18,20,18);
       };
-      img.src="./static/sleepImg.png";
+      img.src="./static/sleepImg2.png";
       imgFlag =!imgFlag;
     }
     drawRect(cx,startX,startY,endX,endY,color)
@@ -170,5 +176,42 @@ function drawRect(cx, startX, startY, endX, endY, color) {
   cx.beginPath();
 }
 
+function drawDashLine(ctx, x1, y1, x2, y2, dashLength){
+  var dashLen = dashLength === undefined ? 5 : dashLength,
+    xpos = x2 - x1, //得到横向的宽度;
+    ypos = y2 - y1, //得到纵向的高度;
+    numDashes = Math.floor(Math.sqrt(xpos * xpos + ypos * ypos) / dashLen);
+  //利用正切获取斜边的长度除以虚线长度，得到要分为多少段;
+  for(var i=0; i<numDashes; i++){
+    if(i % 2 === 0){
+      ctx.moveTo(x1 + (xpos/numDashes) * i, y1 + (ypos/numDashes) * i);
+      //有了横向宽度和多少段，得出每一段是多长，起点 + 每段长度 * i = 要绘制的起点；
+    }else{
+      ctx.lineTo(x1 + (xpos/numDashes) * i, y1 + (ypos/numDashes) * i);
+    }
+  }
+  ctx.stroke();
+}
 
+/***********************
+ *  时间戳 转 指定时间格式
+ ***********************/
+function dateFormat(date, type) {
+  if (!date) {
+    return "0000-00-00";
+  }
+  var date = new Date(date);
+  let time = "0000-00-00";
+  let year = date.getFullYear();
+  let month = (date.getMonth() + 1) >= 10 ? (date.getMonth() + 1) : "0" + (date.getMonth() + 1);
+  let day = date.getDate() >= 10 ? date.getDate() : "0" + date.getDate();
+  let hour = date.getHours() >= 10 ? date.getHours() : "0" + date.getHours();
+  let min = date.getMinutes() >= 10 ? date.getMinutes() : "0" + date.getMinutes();
+  let second = date.getSeconds() >= 10 ? date.getSeconds() : "0" + date.getSeconds();
+  time = year + "-" + month + "-" + day
+  if (type == "hh:mm") {
+    time = hour + ":" + min;
+  }
+  return time;
+};
 module.exports = cylindricalBi;

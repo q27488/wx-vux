@@ -7,16 +7,22 @@
       <!--睡眠得分-->
       <div class="score-content">
         <canvas id="sleepScore" ref="sleepScore"></canvas>
-        <div id="startSleep">
-          <p class="timeText">{{sleepStartShow}}<small>{{sleepStartUnion}}</small></p>
-          <p class="text">开始睡眠</p>
+        <div v-if="sleepShow">
+          <div id="startSleep">
+            <p class="timeText">{{sleepStartShow}}
+              <small>{{sleepStartUnion}}</small>
+            </p>
+            <p class="text">开始睡眠</p>
+          </div>
+          <div id="endSleep">
+            <p class="timeText">{{sleepEndShow}}
+              <small>{{sleepEndUnion}}</small>
+            </p>
+            <p class="text">结束睡眠</p>
+          </div>
+          <div id="intoTime"><p>{{organizationName}}</p></div>
+          <div id="hotelName"><p>{{date}}</p></div>
         </div>
-        <div id="endSleep">
-          <p class="timeText">{{sleepEndShow}}<small>{{sleepEndUnion}}</small></p>
-          <p class="text">结束睡眠</p>
-        </div>
-        <div id="hotelName"><p>{{organizationName}}</p></div>
-        <div id="intoTime"><p>{{date}}</p></div>
       </div>
       <!--睡眠时相图谱-->
       <div class="section">
@@ -70,11 +76,11 @@
           </div>
           <div class="info-section">
             <div class="info-title" @click="changeShowDes('eyeSleepTime')">清醒时长：{{eyeSleepTime}}</div>
-            <div class="info-title" @click="changeShowDes('sleepPresent')">睡眠效率：{{sleepPresent}}</div>
+            <div class="info-title" @click="changeShowDes('sleepEfficiency')">睡眠效率：{{sleepEfficiency}}%</div>
             <div class="info-des info-des-left" v-if="showDes == 'eyeSleepTime'">
               睡中清醒后，保持意识清醒的时长。
             </div>
-            <div class="info-des info-des-right" v-if="showDes == 'sleepPresent'">
+            <div class="info-des info-des-right" v-if="showDes == 'sleepEfficiency'">
               睡眠效率是指人每晚的睡眠时长（深睡+中睡+浅睡）/每晚的睡眠总时间的比值。睡眠效率评分可以直观的表现在整晚睡眠过程中，“睡着”状态所占的时间比例。如果入睡较快、夜间很少醒来、或夜醒后能快速重新入睡，表示没有入睡困难、失眠等情况，则睡眠效率评分较高。睡眠效率是评定睡眠质量的重要指标，一般来说，睡眠效率越高，睡眠质量就越好。
             </div>
           </div>
@@ -91,9 +97,9 @@
         <div class="title-text">心率呼吸图谱</div>
         <div id="xlHxBI" style="width: 100%;height: 300px;"></div>
         <!--<div class="BI-des">-->
-          <!--<div class="BI-des-title" @click="changeShowBIDes('xlHxBI')">图谱解析</div>-->
-          <!--<div class="BI-des-text" v-if="showBIDes == 'xlHxBI'" v-html="">-->
-          <!--</div>-->
+        <!--<div class="BI-des-title" @click="changeShowBIDes('xlHxBI')">图谱解析</div>-->
+        <!--<div class="BI-des-text" v-if="showBIDes == 'xlHxBI'" v-html="">-->
+        <!--</div>-->
         <!--</div>-->
       </div>
       <!--体动图谱-->
@@ -143,37 +149,39 @@
   import Bi from '../assets/js/Bi.js'
   //http
   import devApi from "../api/devApi"
+
   export default {
     data() {
       return {
         scroll: "",               //better-Scroll
         //睡眠得分参数
+        sleepShow:false,
         sleepScoreOptions: {
           id: "sleepScore",
           arc_color: "#4a8bff",
           arc_bckColor: "rgba(74,139,255,0.2)",
           circle_bakClr: "#4a8bff",
           arc_Endcolor: "#4a8bff",
-          present:0,
+          present: 0,
         },
         sleepStart: 0,              //报告开始时间戳
         sleepStartShow: 0,              //报告开始时间戳
-        sleepStartUnion:"AM",        //时间单位
+        sleepStartUnion: "AM",        //时间单位
         sleepEnd: 0,                //报告结束时间戳
         sleepEndShow: 0,                //报告结束时间戳
-        sleepEndUnion:"PM",        //时间单位
-        organizationName:"",        //住址名称
-        score:0,                    //得分
-        date:0,                     //报告时间戳
+        sleepEndUnion: "PM",        //时间单位
+        organizationName: "",        //住址名称
+        score: 0,                    //得分
+        date: 0,                     //报告时间戳
         //睡眠时相图谱参数
         sleepTimeOptions: {
-          id:"sleepTimeBI",
+          id: "sleepTimeBI",
           colors: ['#cdf8f0', '#9af2e0', '#32e3c0', '#0fb191'],
           text: ["清醒", "浅睡", "中睡", "深睡"],
           timeSpace: ['01:00', '02:00', '03:00', '04:00', '05:00'],
-          startTime:0,
-          endTime:0,
-          data:[]
+          startTime: 0,
+          endTime: 0,
+          data: []
         },
         //睡眠数据
         totalSleepTime: "暂无数据",      //睡眠总长
@@ -184,88 +192,29 @@
         shallowSleepTime: "暂无数据",    //浅睡时长
         sleepAge: "暂无数据",            //睡眠年龄
         eyeSleepTime: "暂无数据",        //清醒时长
-        sleepPresent: "暂无数据",        //睡眠效率
+        sleepEfficiency: "暂无数据",        //睡眠效率
 
-        sleepdataAnalysis:"",     //睡眠时相数据分析
-        sleepQualityAnalysis:"",    //睡眠质量分析
-        bodyMoveAnalysis:"",        //体动分析
+        sleepdataAnalysis: "",     //睡眠时相数据分析
+        sleepQualityAnalysis: "",    //睡眠质量分析
+        bodyMoveAnalysis: "",        //体动分析
 
         showDes: "",               //展示那条名词解释
-        showBIDes:"",              //展示BI名词解析
+        showBIDes: "",              //展示BI名词解析
 
-        report:"暂无数据",   //睡眠报告
+        report: "暂无数据",   //睡眠报告
       }
     },
     mounted() {
-      devApi.getSleepReport()
-        .then((res)=>{
-          console.log("res:",res);
-          this.date = utils.dateFormat(res.date);   //报告时间
-          this.organizationName = res.organizationName;   //酒店名字
-          this.score = res.score;                         //得分
-          this.sleepStart = res.sleepStart;
-          this.sleepEnd = res.sleepEnd;
-          this.sleepStartShow = utils.dateFormat(this.sleepStart,'hh:mm');
-          this.sleepEndShow = utils.dateFormat(this.sleepEnd,'hh:mm');
-          this.sleepScoreOptions.present = res.score;
-          this.initScore();
-
-          this.totalSleepTime =utils.minutes2hour(res.totalSleepTime);
-          this.deepSleepTime =utils.minutes2hour(res.deepSleepTime);
-          this.fallAsleep =utils.minutes2hour(res.fallAsleep);
-          this.middleSleep =utils.minutes2hour(res.middleSleep);
-          this.leaveBed =res.leaveBed ;
-          this.shallowSleepTime =utils.minutes2hour(res.shallowSleepTime);
-          this.sleepAge = res.sleepAge == 0 ? "外星人睡眠":res.sleepAge + "岁";
-          this.eyeSleepTime =utils.minutes2hour(res.eyeSleepTime);
-          this.sleepPresent =0;
-
-          this.sleepdataAnalysis = res.sleepdataAnalysis;
-          this.sleepQualityAnalysis = res.sleepQualityAnalysis;
-          this.bodyMoveAnalysis = res.bodyMoveAnalysis;
-
-          this.report = res.report;
-
-          /****************
-           * 渲染BI数据
-           ****************/
-          //睡眠时相图谱
-          this.sleepTimeOptions.startTime = res.sleepStart;
-          this.sleepTimeOptions.endTime = res.sleepEnd;
-          this.sleepTimeOptions.data = res.sleepData;
-          console.log("aaaaaa",this.sleepTimeOptions)
-          //将时间分成6份
-          let diff = (this.sleepTimeOptions.endTime - this.sleepTimeOptions.startTime)/6;
-          let timeSpace = [];
-          for(let i=1;i<6;i++){
-            timeSpace.push( utils.dateFormat(this.sleepTimeOptions.startTime + diff*i,'hh:mm') );
-          }
-          this.sleepTimeOptions.timeSpace = timeSpace;
-          this.initSleepTime();
-          //睡眠时相图谱END
-
-          //心跳呼吸图谱
-          let xtHxData = utils.update_xinlvHuxi_BI(res.rrDatas,res.hhDatas);
-          console.log(xtHxData)
-          Bi.xtHxBi_char(this,"xlHxBI",xtHxData);
-          //心跳呼吸图谱END
-
-          //体动图谱
-          let doingData = utils.update_doing_BI(res.bodyMoves);
-          Bi.doing_char(this,"doingBI",doingData)
-          //体动图谱END
-
-          this.$nextTick(() => {
-            let wrapper = document.querySelector('.wrapper')
-            this.scroll = new BScroll(wrapper, {click: true})
-          })
-        });
-
-
-      this.initSleepSpider();
-
-
-
+        this.initSleepTime();
+        devApi.getSleepReport()
+          .then((res) => {
+            if (res.code === 66666) {
+              this.updateSleep(res);
+              this.sleepShow = true;
+            } else {
+              this.$router.push({name: "noReport"})
+            }
+          });
     },
     methods: {
       //初始化睡眠得分
@@ -282,27 +231,12 @@
         cylindricalBi(this.sleepTimeOptions)
       },
       //初始化睡眠信息评估图谱
-      initSleepSpider(){
+      initSleepSpider(data) {
         this.SpiderChart = new spiderChart({
-          id:"spiderBI",
+          id: "spiderBI",
           dataLineColor: "#32e3c0",
           levelColor: ["#e1eeff", "#bfdcfe", "#a0cbfe", "#81baff"], //蜘蛛图框 颜色,默认为 #ddd
-          series: [{
-            name: "睡眠总长",
-            level: 1,
-          }, {
-            name: "深睡占比",
-            level: 2,
-          }, {
-            name: "睡眠效率",
-            level: 3,
-          }, {
-            name: "入睡速度",
-            level: 4,
-          }, {
-            name: "清醒次数",
-            level: 0,
-          }],
+          series: data,
         })
       },
       //改变-名词解释显示
@@ -328,12 +262,195 @@
         })
       },
       //
-      goService(){
-        this.$router.push({name:"hotelService"})
+      goService() {
+        this.$router.push({name: "hotelService"})
+      },
+      //更新睡眠报告数据
+      updateSleep(res) {
+        if (res.code == 66666) {
+          this.date = utils.dateFormat(res.date);   //报告时间
+          this.organizationName = res.organizationName;   //酒店名字
+          this.score = res.score;                         //得分
+          this.sleepStart = res.sleepStart;
+          this.sleepEnd = res.sleepEnd;
+          this.sleepStartShow = utils.dateFormat(this.sleepStart, 'hh:mm');
+          let hour = this.sleepStartShow.split(":")[0];
+          let minutes = this.sleepStartShow.split(":")[1];
+          if (hour > 12) {
+            hour = hour - 12;
+            this.sleepStartUnion = "PM";
+          } else {
+            this.sleepStartUnion = "AM";
+          }
+          this.sleepStartShow = hour + ":" + minutes;
+          this.sleepEndShow = utils.dateFormat(this.sleepEnd, 'hh:mm');
+          hour = this.sleepEndShow.split(":")[0];
+          minutes = this.sleepEndShow.split(":")[1];
+          if (hour > 12) {
+            hour = hour - 12;
+            this.sleepEndUnion = "PM";
+          } else {
+            this.sleepEndUnion = "AM";
+          }
+          this.sleepEndShow = hour + ":" + minutes;
+          this.sleepScoreOptions.present = res.score;
+          this.initScore();
+
+          this.totalSleepTime = utils.minutes2hour(res.totalSleepTime);
+          this.deepSleepTime = utils.minutes2hour(res.deepSleepTime);
+          this.fallAsleep = utils.minutes2hour(res.fallAsleep);
+          this.middleSleep = utils.minutes2hour(res.middleSleep);
+          this.leaveBed = res.leaveBed;
+          this.shallowSleepTime = utils.minutes2hour(res.shallowSleepTime);
+          this.sleepAge = res.sleepAge == 0 ? "外星人睡眠" : res.sleepAge + "岁";
+          this.eyeSleepTime = utils.minutes2hour(res.eyeSleepTime);
+          this.sleepEfficiency = res.sleepEfficiency;
+
+          this.sleepdataAnalysis = res.sleepdataAnalysis;
+          this.sleepQualityAnalysis = res.sleepQualityAnalysis;
+          this.bodyMoveAnalysis = res.bodyMoveAnalysis;
+
+          this.report = res.report;
+
+          /****************
+           * 渲染BI数据
+           ****************/
+          //睡眠时相图谱
+          this.sleepTimeOptions.startTime = res.sleepStart;
+          this.sleepTimeOptions.endTime = res.sleepEnd;
+          this.sleepTimeOptions.data = res.sleepData;
+          console.log("aaaaaa", this.sleepTimeOptions)
+          //将时间分成6份
+          let diff = Math.floor((this.sleepTimeOptions.endTime - this.sleepTimeOptions.startTime) / 6);
+          let timeSpace = [];
+          for (let i = 1; i < 6; i++) {
+            timeSpace.push(utils.dateFormat(this.sleepTimeOptions.startTime + diff * i, 'hh:mm'));
+          }
+          this.sleepTimeOptions.timeSpace = timeSpace;
+          this.initSleepTime();
+          //睡眠时相图谱END
+
+          //心跳呼吸图谱
+          let xtHxData = utils.update_xinlvHuxi_BI(res.rrDatas, res.hhDatas);
+          console.log("xtHxData", xtHxData)
+          Bi.xtHxBi_char(this, "xlHxBI", xtHxData);
+          //心跳呼吸图谱END
+
+          //体动图谱
+          let doingData = utils.update_doing_BI(res.bodyMoves);
+          Bi.doing_char(this, "doingBI", doingData);
+          //体动图谱END
+
+          //蜘蛛图
+          /*  评级规则
+          优质
+          深睡占比：x>=20%
+          睡眠效率：x>=85%
+          清醒次数：x=<2
+          睡眠时长：8h=<x=<9h
+          入睡速度：x=<20min
+
+          良好
+          深睡占比：15%=<x<20%
+          睡眠效率：75%=<x<85%
+          清醒次数：2<x=<4
+          睡眠时长：7h=<x<8h and 9h=<x=<11h
+          入睡速度：20min<x=<40min
+
+          略差
+          深睡占比：10%=<x<15%
+          睡眠效率：65%=<x<75%
+          清醒次数：4<x=<6
+          睡眠时长：5=<x<7h and 11h<x=<13h
+          入睡速度：40min<x=<80min
+
+          不及格
+          深睡占比：10%<x
+          睡眠效率：65%<x
+          清醒次数：6<x
+          睡眠时长：x<5h  and  13h<x
+          入睡速度：80min<x
+          */
+          var spiderData = [];
+          var totalSleepTime_name = "睡眠时长";
+          var totalSleepTime_level = 0;
+          if (res.totalSleepTime >= (8 * 60) && res.totalSleepTime <= (9 * 60)) {
+            totalSleepTime_level = 4;
+          } else if ((res.totalSleepTime >= (7 * 60) && res.totalSleepTime < (8 * 60)) || (res.totalSleepTime >= (9 * 60) && res.totalSleepTime < (11 * 60))) {
+            totalSleepTime_level = 3;
+          } else if ((res.totalSleepTime >= (5 * 60) && res.totalSleepTime < (7 * 60)) || (res.totalSleepTime >= (11 * 60) && res.totalSleepTime < (13 * 60))) {
+            totalSleepTime_level = 2;
+          } else if (res.totalSleepTime < (5 * 60) || res.totalSleepTime > (13 * 60)) {
+            totalSleepTime_level = 1;
+          }
+          spiderData.push({name: totalSleepTime_name, level: totalSleepTime_level});
+
+          var deepSleepTime_name = "深睡占比";
+          var deepSleepTime_level = 0;
+          var deepSleepTime_present = res.deepSleepTime / res.totalSleepTime;
+          if (deepSleepTime_present >= 0.20) {
+            deepSleepTime_level = 4;
+          } else if (deepSleepTime_present >= 0.15) {
+            deepSleepTime_level = 3;
+          } else if (deepSleepTime_present >= 0.10) {
+            deepSleepTime_level = 2;
+          } else if (deepSleepTime_present < 0.10) {
+            deepSleepTime_level = 1;
+          }
+          spiderData.push({name: deepSleepTime_name, level: deepSleepTime_level});
+
+          var sleepEfficiency_name = "睡眠效率";
+          var sleepEfficiency_level = 0;
+          if (res.sleepEfficiency >= 85) {
+            sleepEfficiency_level = 4;
+          } else if (res.sleepEfficiency >= 75) {
+            sleepEfficiency_level = 3;
+          } else if (res.sleepEfficiency >= 65) {
+            sleepEfficiency_level = 2;
+          } else if (res.sleepEfficiency < 65) {
+            sleepEfficiency_level = 1;
+          }
+          spiderData.push({name: sleepEfficiency_name, level: sleepEfficiency_level});
+
+          var intoTime_name = "入睡速度";
+          var intoTime_level = 0;
+          if (res.fallAsleep > 80) {
+            intoTime_level = 1;
+          } else if (res.fallAsleep >= 40) {
+            intoTime_level = 2;
+          } else if (res.fallAsleep >= 20) {
+            intoTime_level = 3;
+          } else if (res.fallAsleep < 20) {
+            intoTime_level = 4;
+          }
+          spiderData.push({name: intoTime_name, level: intoTime_level});
+
+          var leaveBed_name = "清醒次数";
+          var leaveBed_level = 0;
+          if (res.leaveBed <= 2) {
+            leaveBed_level = 4;
+          } else if (res.leaveBed <= 4) {
+            leaveBed_level = 3;
+          } else if (res.leaveBed <= 6) {
+            leaveBed_level = 2;
+          } else if (res.leaveBed > 6) {
+            leaveBed_level = 1;
+          }
+          spiderData.push({name: leaveBed_name, level: leaveBed_level});
+          this.initSleepSpider(spiderData);
+          //蜘蛛图END
+
+          this.$nextTick(() => {
+            let wrapper = document.querySelector('.wrapper')
+            this.scroll = new BScroll(wrapper, {click: true})
+          })
+
+        } else {
+        }
       }
     },
     components: {
-      headerBtn, backBtn
+      headerBtn, backBtn,
     }
   }
 </script>
@@ -356,36 +473,37 @@
     display: block;
     width: 100%;
     text-align: left;
-    p,small{
+    p, small {
       color: #e5e5e5;
       font-size: 12px;
     }
-    .timeText{
+    .timeText {
       color: #fff;
       font-size: 16px;
     }
     #sleepScore {
       width: 100%;
+      height: 400px;
     }
 
-    #startSleep{
+    #startSleep {
       position: absolute;
       bottom: 45%;
       left: 2%;
     }
-    #endSleep{
+    #endSleep {
       position: absolute;
       bottom: 24%;
       left: 10%;
     }
-    #hotelName{
+    #hotelName {
       position: absolute;
       right: 2%;
       bottom: 40%;
     }
-    #intoTime{
+    #intoTime {
       position: absolute;
-      right: 12%;
+      left: 68%;
       bottom: 30%;
     }
   }
@@ -436,7 +554,8 @@
     display: block;
     margin: 0 auto;
   }
-  #doingBI{
+
+  #doingBI {
     padding-top: 10%;
   }
 
@@ -513,20 +632,21 @@
     }
 
   }
+
   //睡眠数据END
 
   //图谱解析
-  .BI-des{
+  .BI-des {
     display: block;
     position: relative;
-    .BI-des-title{
+    .BI-des-title {
       text-align: center;
-      font-size:14px;
+      font-size: 14px;
       color: #4a8bff;
       text-decoration: underline;
       margin: 10px 0;
     }
-    .BI-des-text{
+    .BI-des-text {
       display: block;
       text-align: left;
       font-size: 12px;
@@ -534,21 +654,23 @@
       padding: 0 15px 10px;
     }
   }
+
   //图谱解析END
 
   //睡眠报告
-  .sleep-report{
-    padding:  30px 15px;
+  .sleep-report {
+    padding: 30px 15px;
     font-size: 12px;
     color: #fff;
     text-align: left;
   }
+
   //睡眠报告END
 
-  .brLine{
+  .brLine {
     display: block;
     width: 80%;
-    height:auto;
+    height: auto;
     margin: 0 auto;
   }
 </style>

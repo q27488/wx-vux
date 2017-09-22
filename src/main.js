@@ -1,23 +1,29 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import FastClick from 'fastclick'           //移除移动端点击延迟
 import router from './router'
+import store from './store/index'
 import VueResource from 'vue-resource'
 import App from './App'
 import { LoadingPlugin } from 'vux'
-
-//使用highcharts 作为图表插件
+import { WechatPlugin } from 'vux'
 import highcharts from 'highcharts'
-Vue.prototype.$highcharts = highcharts;
-
 //初始化css
 import './assets/css/reset.css'
 import './assets/css/vux-css.css'
 
+//使用highcharts 作为图表插件
+Vue.prototype.$highcharts = highcharts;
+
+
+
+//http:vue-resource
 Vue.use(VueResource);
 
-//注册title全局指令
+Vue.use(LoadingPlugin);   //使用全局loading
+Vue.use(WechatPlugin);    //使用微信SDK,请在微信环境下测试
+
+//注册title全局指令,用于改变title
 Vue.directive('title', {
   inserted: function (el, binding) {
     document.title = el.innerText
@@ -26,13 +32,13 @@ Vue.directive('title', {
 })
 
 Vue.use(LoadingPlugin);
-//防双击插件
-// FastClick.attach(document.body)
+
 
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app-box')

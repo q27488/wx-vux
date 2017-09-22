@@ -1,60 +1,54 @@
 <template>
   <div class="container">
     <div v-title>有宁睡眠</div>
-    <header-btn
-      :headSrc="'http://p1.music.126.net/4Fx8VLiwwpj1DExmLiG1og==/18538865557829806.jpg?param=200y200'"></header-btn>
+    <header-btn></header-btn>
     <bind-btn></bind-btn>
     <div class="text">
       绑定设备后，方可实时知晓您的健康数据 <br>
       赶快去绑定设备吧！
     </div>
-    <alert v-model="show" @on-show="" @on-hide="">这是content</alert>
-    <confirm v-model="show1"
-    @on-cancel="onCancel"
-    @on-confirm="onConfirm"
-    @on-show=""
-    @on-hide="">
-    <p style="text-align:center;">这是content</p>
-    </confirm>
   </div>
 </template>
 
 <script>
-  import {Alert, Confirm} from 'vux'
   import headerBtn from "@/components/headerBtn.vue"
   import bindBtn from "@/components/bindBtn.vue"
 
   export default {
-    data() {
-      return {
-        show: false,
-        show1: false,
-        msg: "this is layout"
-      }
-    },
     mounted() {
-        this.show = true;
-        setTimeout(() => {
-          this.show = false;
-          this.show1 = true;
-        }, 1000)
+      localStorage.removeItem("zkzk_wx_headImg");
+      this.$http({
+        url: 'jssdk-config',
+        method: 'post',
+      }).then((res) => {
+        console.log(res);
+        if (res.body.code == 66666) {
+          this.$wechat.config({
+            debug: res.body.debug,
+            appId: res.body.appId,
+            timestamp: res.body.timestamp,
+            nonceStr: res.body.nonceStr,
+            signature: res.body.signature,
+            jsApiList: [res.body.jsApiList]
+          })
+          //保存头像信息
+          if (res.body.headImg) {
+            localStorage.setItem("zkzk_wx_headImg", res.body.headImg);
+          }
+        } else if (res.body.code == 10015) {
+          this.$store.commit("SHOW_ALERT",{msg:"未登录，请先登录后重试"});
+          this.alertShow = true;
+        }else{
+          this.$store.commit("SHOW_ALERT",{msg:res.msg});
+          this.alertShow = true;
+        }
+      })
     },
     methods: {
-      onCancel() {
-        console.log('on cancel')
-      },
-      onConfirm(msg) {
-        console.log('on confirm')
-        if (msg) {
-//          alert(msg)
-        }
-      },
     },
     components: {
       headerBtn,
-      bindBtn,
-      Alert,
-      Confirm
+      bindBtn
     }
   }
 </script>
